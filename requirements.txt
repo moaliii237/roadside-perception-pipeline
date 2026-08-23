@@ -1,0 +1,6 @@
+numpy
+opencv-python
+torch
+# for the ROS 2 / mcap data handling described in the README:
+mcap
+mcap-ros2-support
