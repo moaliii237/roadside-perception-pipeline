@@ -13,19 +13,19 @@ proprietary application code.
 
 ```
 raw driving footage (RGB frames + GPS track)
-        │
-        ├─ object detection ........ fixed roadside objects (fences, gates,
-        │                            guardrails, signs, posts, tree trunks,
-        │                            lamp posts, cabinets, ...)
-        │
-        ├─ vegetation segmentation .. short mown grass / tall grass /
-        │                            woody scrub / other
-        │
-        ├─ monocular geolocation .... each detection gets its own map
-        │                            position from camera geometry + the
-        │                            GPS track (not the vehicle position)
-        │
-        └─ per-object fusion ........ many sightings of one object are
+        |
+        |- object detection ........ fixed roadside objects (fences, gates,
+        |                            guardrails, signs, posts, tree trunks,
+        |                            lamp posts, cabinets, ...)
+        |
+        |- vegetation segmentation .. short mown grass / tall grass /
+        |                            woody scrub / other
+        |
+        |- monocular geolocation .... each detection gets its own map
+        |                            position from camera geometry + the
+        |                            GPS track (not the vehicle position)
+        |
+        `- per-object fusion ........ many sightings of one object are
                                      merged into one confident map object
 ```
 
@@ -43,9 +43,9 @@ lines that intersect where the object actually stands. The method in
    sheet.
 3. **Ground-plane range** for each detection from its pixel height below the
    horizon, with an explicit trust gate (too close to the horizon or beyond a
-   max range → bearing-only).
-4. **Multi-view fusion**: a robust (Huber) least-squares solve over all
-   bearings and near-range measurements of a tracked object → one position
+   max range -> bearing-only).
+4. **Multi-view fusion**: a reliable (Huber) least-squares solve over all
+   bearings and near-range measurements of a tracked object -> one position
    with a covariance and a quality label (triangulated / near-range / weak).
 5. **Validation** against aerial imagery: the produced positions were checked
    to land within a few metres of the real objects.
@@ -55,10 +55,10 @@ and the calibration is recovered from the drive.
 
 ## Semantic components
 
-- **Object detection** — a transformer detector (RF-DETR) fine-tuned for the
+- **Object detection** - a transformer detector (RF-DETR) fine-tuned for the
   fixed-object classes, run with a recall-first operating point and filtered
   downstream. See [`src/detection.md`](src/detection.md).
-- **Vegetation segmentation** — a frozen DINOv2 ViT-S/14 backbone with a small
+- **Vegetation segmentation** - a frozen DINOv2 ViT-S/14 backbone with a small
   trained convolutional head, 4 vegetation classes. Architecture in
   [`src/vegetation_segmentation.py`](src/vegetation_segmentation.py). Trees are
   intentionally handled by the object detector (as trunks), not the vegetation
